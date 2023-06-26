@@ -5,6 +5,7 @@ const requiredFields = Object.keys(USER).filter(field => !['id'].includes(field)
 
 const hasRequiredFields = (obj, fieldsArr) => fieldsArr.every(field => obj.hasOwnProperty(field));
 const hasInValidFields = (userObj) => !Object.keys(userObj).every(f => USER.hasOwnProperty(f));
+const hasAtLeastOne = (fighterObj) => Object.keys(fighterObj).some(field => Object.keys(USER).includes(field));
 
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@gmail\.com$/;
@@ -59,17 +60,19 @@ const updateUserValid = (req, res, next) => {
     try {
       if(!Object.keys(userData).length){
         throw new Error(`Data should not be empty!`);
+      } else if (!hasAtLeastOne(userData)){
+        throw new Error(`At least one prop from model should be in body!`);
       } else if (userData.id){
         throw new Error(`The 'id' field should not be included!`);
       } else if (hasInValidFields(userData)){
         throw new Error(`Extra fields are prohibited!`);
-      } else if (userData.password && !isValidPassword(userData.password)){
+      } else if (userData.password !== undefined && !isValidPassword(userData.password)){
         throw new Error(`Password should be at least 3 characters long`);
-      } else if (userData.email && !isValidEmail(userData.email)){
+      } else if (userData.email !== undefined && !isValidEmail(userData.email)){
         throw new Error(`Email should belong to the Gmail domain.`);
-      } else if (userData.phoneNumber && !isValidPhoneNumber(userData.phoneNumber)){
+      } else if (userData.phoneNumber !== undefined && !isValidPhoneNumber(userData.phoneNumber)){
         throw new Error(`PhoneNumber should follow the pattern: +380xxxxxxxxx`);
-      } else if (userData.email && isUserAlreadyExistByEmail(userData.email.toLowerCase())) {
+      } else if (userData.email !== undefined && isUserAlreadyExistByEmail(userData.email.toLowerCase())) {
         throw new Error(`The user with email: '${userData.email}' already exists!`);
       } else if (userData.phoneNumber && isUserAlreadyExistByPhone(userData.phoneNumber)) {
         throw new Error(`The user with phoneNumber: '${userData.phoneNumber}' already exists!`);
