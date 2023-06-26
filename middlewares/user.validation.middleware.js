@@ -5,7 +5,7 @@ const requiredFields = Object.keys(USER).filter(field => !['id'].includes(field)
 
 const hasRequiredFields = (obj, fieldsArr) => fieldsArr.every(field => obj.hasOwnProperty(field));
 const hasInValidFields = (userObj) => !Object.keys(userObj).every(f => USER.hasOwnProperty(f));
-const hasAtLeastOne = (fighterObj) => Object.keys(fighterObj).some(field => Object.keys(USER).includes(field));
+const hasAtLeastOne = (userObj) => Object.keys(userObj).some(field => Object.keys(USER).includes(field));
 
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@gmail\.com$/;
