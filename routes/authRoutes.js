@@ -9,7 +9,13 @@ router.post(
   (req, res, next) => {
     try {
       // TODO: Implement login action (get the user if it exist with entered credentials)
-      res.data = data;
+      const {email, password} = req.body;
+      if (email) {
+        const foundUser = authService.login({email, password})
+        res.data = foundUser;
+      } else {
+        throw new Error("Invalid user credentials!");
+      }
     } catch (err) {
       res.err = err;
     } finally {
