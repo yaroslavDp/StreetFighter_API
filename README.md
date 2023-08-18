@@ -1,4 +1,4 @@
-# NodeJS starter
+# NodeJS StreetFighter API
 
 ## Installation
 
